@@ -1,0 +1,287 @@
+/* ==========================================
+   1. VARIABLES DE ESTILO Y TEMAS
+   ========================================== */
+:root {
+  --primary-color: #4A7C59;       /* Verde sutil para acciones principales */
+  --primary-hover: #3b6347;
+  --secondary-color: #6C757D;     /* Gris para botones secundarios */
+  --secondary-hover: #5a6268;
+  --danger-color: #C86D51;        /* Color para eliminar o advertencias */
+  --danger-hover: #a8573f;
+  --bg-color: #F7F4EF;            /* Fondo suave y cálido */
+  --card-bg: #FFFFFF;
+  --text-main: #2D3142;
+  --text-muted: #6C757D;
+  --border-color: #E6DFD5;
+  --radius: 10px;
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* ==========================================
+   2. REGLAS GENERALES Y ESTRUCTURA
+   ========================================== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  line-height: 1.6;
+  padding-bottom: 40px;
+}
+
+header {
+  background-color: var(--card-bg);
+  border-bottom: 1px solid var(--border-color);
+  padding: 24px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+header h1, header h2 {
+  font-size: 1.6rem;
+  color: var(--text-main);
+  margin-bottom: 4px;
+}
+
+.container {
+  max-width: 800px;
+  margin: 24px auto;
+  padding: 0 16px;
+}
+
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+}
+
+.card h2 {
+  font-size: 1.3rem;
+  margin-bottom: 16px;
+  color: var(--text-main);
+  border-bottom: 2px solid var(--bg-color);
+  padding-bottom: 8px;
+}
+
+.hidden {
+  display: none !important;
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid var(--border-color);
+  margin: 20px 0;
+}
+
+/* ==========================================
+   3. PERFIL DOCENTE
+   ========================================== */
+.profile-content {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+@media (max-width: 600px) {
+  .profile-content {
+    flex-direction: column;
+  }
+}
+
+.avatar-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--primary-color);
+}
+
+.profile-inputs {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+/* ==========================================
+   4. FORMULARIOS E INPUTS
+   ========================================== */
+.form-group {
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+label {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+input[type="text"],
+input[type="number"],
+select,
+textarea {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  font-size: 0.95rem;
+  background-color: #FAFAFA;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  background-color: #FFFFFF;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.opt-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.opt-row input[type="radio"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--primary-color);
+  cursor: pointer;
+}
+
+/* ==========================================
+   5. BOTONES Y ACCIONES
+   ========================================== */
+.btn {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.btn:hover {
+  background-color: var(--primary-hover);
+}
+
+.btn-secondary {
+  background-color: var(--secondary-color);
+}
+
+.btn-secondary:hover {
+  background-color: var(--secondary-hover);
+}
+
+.btn-danger-sm {
+  background-color: var(--danger-color);
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btn-danger-sm:hover {
+  background-color: var(--danger-hover);
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.header-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.actions-right {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+/* ==========================================
+   6. MÓDULO ESTUDIANTE Y EVALUACIÓN
+   ========================================== */
+.empty-text {
+  color: var(--text-muted);
+  text-align: center;
+  padding: 20px 0;
+}
+
+#previewTimerDisplay {
+  background: #EAE5DC;
+  color: var(--text-main);
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.question-item {
+  background: var(--bg-color);
+  border: 1px solid var(--border-color);
+  padding: 16px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+.question-item label {
+  font-weight: normal;
+  padding: 8px 12px;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  margin-top: 4px;
+  transition: background-color 0.15s ease;
+}
+
+.question-item label:hover {
+  background-color: #F0EAE1;
+}
+
+.question-item input[type="radio"] {
+  accent-color: var(--primary-color);
+}
