@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plataforma de Evaluaciones</title>
+  <link rel="stylesheet" href="index.css">
+  <!-- Librería SheetJS para exportar eportes a Excel (.xlsx) -->
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+</head>
+<body> 
+
+  <!-- ========================================== -->
+  <!-- MÓDULO DEL DOCENTE                         -->
+  <!-- ========================================== -->
+  <div id="teacherModule">
+    <header id="teacherHeader">
+      <h1>Panel Docente - Gestión de Evaluaciones</h1>
+    </header>
+
+    <main class="container">
+      <!-- Seccion de Perfil Docente -->
+      <section id="profileSection" class="card">
+        <h2>Perfil Docente</h2>
+        <div class="profile-content">
+          <div class="avatar-container">
+            <img id="avatarImage" src="https://via.placeholder.com/100" alt="Avatar Docente" class="avatar">
+            <input type="file" id="avatarInput" accept="image/*">
+          </div>
+          <div class="profile-inputs">
+            <input type="text" id="profNameInput" placeholder="Nombre del docente" onchange="updateProfile()">
+            <input type="text" id="profSubjectInput" placeholder="Materia / Asignatura" onchange="updateProfile()">
+            <textarea id="profBioInput" placeholder="Descripción / Biografía corta" onchange="updateProfile()"></textarea>
+          </div>
+        </div>
+      </section>
+
+      <!-- Banco de Exámenes -->
+      <section id="examsBankSection" class="card">
+        <div class="section-header">
+          <h2>Banco de Exámenes</h2>
+          <div class="header-buttons">
+            <button class="btn" onclick="openExamCreator()">+ Crear Examen</button>
+            <button class="btn btn-secondary" onclick="exportToExcel()">📊 Exportar Historial a Excel</button>
+          </div>
+        </div>
+        <div id="examsBankContainer">
+          <!-- Las tarjetas de exámenes se renderizan dinámicamente -->
+        </div>
+      </section>
+
+      <!-- Creador y Editor de Exámenes (Oculto por defecto) -->
+      <section id="examCreatorSection" class="card hidden">
+        <h2 id="creatorTitle">Nuevo Examen</h2>
+        <div class="form-group">
+          <label for="examTitleInput">Título del Examen:</label>
+          <input type="text" id="examTitleInput" placeholder="Ej: Evaluación de Matemáticas - Periodo 1">
+        </div>
+        <div class="form-group">
+          <label for="examTimeInput">Tiempo Límite (minutos):</label>
+          <input type="number" id="examTimeInput" value="30" min="1">
+        </div>
+
+        <hr>
+
+        <h3>Agregar Pregunta</h3>
+        <div class="form-group">
+          <label for="newQuestionText">Enunciado de la Pregunta:</label>
+          <input type="text" id="newQuestionText" placeholder="Escribe el enunciado aquí...">
+        </div>
+        <div class="form-group">
+          <label for="newQuestionType">Tipo de Pregunta:</label>
+          <select id="newQuestionType" onchange="toggleOptionFields()">
+            <option value="multiple">Opción Múltiple</option>
+            <option value="open">Pregunta Abierta</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="newQuestionPoints">Puntos / Valor:</label>
+          <input type="number" id="newQuestionPoints" value="1" min="0.5" step="0.5">
+        </div>
+
+        <!-- Opciones para pregunta múltiple -->
+        <div id="multipleOptionsBlock">
+          <p><small>Marca cuál opción es la correcta:</small></p>
+          <div class="opt-row"><input type="radio" name="correctOpt" value="0" checked> <input type="text" class="opt-input" placeholder="Opción A"></div>
+          <div class="opt-row"><input type="radio" name="correctOpt" value="1"> <input type="text" class="opt-input" placeholder="Opción B"></div>
+          <div class="opt-row"><input type="radio" name="correctOpt" value="2"> <input type="text" class="opt-input" placeholder="Opción C"></div>
+          <div class="opt-row"><input type="radio" name="correctOpt" value="3"> <input type="text" class="opt-input" placeholder="Opción D"></div>
+        </div>
+
+        <button class="btn btn-secondary" onclick="addQuestionToCurrentExam()" style="margin-top:10px;">+ Agregar Pregunta al Examen</button>
+
+        <hr>
+
+        <h3>Preguntas Agregadas:</h3>
+        <div id="currentExamQuestionsList"></div>
+
+        <div class="actions-right" style="margin-top: 15px;">
+          <button class="btn" onclick="saveExamToBank()">Guardar Examen</button>
+          <button class="btn btn-danger-sm" onclick="closeExamCreator()">Cancelar</button>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MÓDULO DEL ESTUDIANTE                      -->
+  <!-- ========================================== -->
+  <div id="studentModule" class="hidden">
+    <header style="text-align: center; padding: 20px 0;">
+      <h2>Plataforma de Evaluaciones</h2>
+      <p style="color: var(--text-muted, #666);">Por favor responde con atención las preguntas solicitadas.</p>
+    </header>
+
+    <main class="container">
+      <!-- Sección de realización del examen -->
+      <section id="previewSection" class="card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+          <h3 id="previewTitle" style="margin: 0;"></h3>
+          <div id="previewTimerDisplay" style="font-size: 1.2rem; font-weight: bold; background: #eee; padding: 6px 12px; border-radius: 6px;">⏱️ 00:00</div>
+        </div>
+
+        <form id="previewExamForm">
+          <div id="previewQuestionsContainer"></div>
+          <button type="submit" class="btn" style="width: 100%; margin-top: 15px;">Finalizar y Entregar Evaluación</button>
+        </form>
+      </section>
+
+      <!-- Resultados post-evaluación -->
+      <section id="resultsContainer" class="card hidden">
+        <h2>🎉 ¡Evaluación Entregada!</h2>
+        <div id="scoreDetails"></div>
+      </section>
+    </main>
+  </div>
+
+  <script src="index.js"></script>
+</body>
+</html>
